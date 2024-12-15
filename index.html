@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Bar with Suggestions</title>
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background: linear-gradient(120deg, #6a11cb, #2575fc);
+            color: #fff;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin: 10px 0;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .line {
+            width: 80vw;
+            height: 2px;
+            background-color: #ffffff75;
+            margin: 10px 20vw;
+            animation: growLine 1s ease-in-out;
+        }
+
+        .search-container {
+            position: relative;
+            text-align: center;
+            animation: slideIn 1s ease-in-out;
+        }
+
+        #search-bar {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #search-bar:focus {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .suggestions-list {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 400px;
+            max-height: 200px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            border-radius: 10px;
+            background-color: #fff;
+            overflow-y: auto;
+            display: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .suggestions-list li {
+            padding: 12px;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .suggestions-list li:hover {
+            background-color: #6a11cb;
+            color: #fff;
+        }
+
+        #imageContainer {
+            margin-top: 20px;
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        img {
+            max-width: 20%;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes growLine {
+            from {
+                width: 0;
+            }
+            to {
+                width: 80vw;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="search-container">
+        <h1>NLP Simulations</h1>
+        <div class="line"></div>
+        <h1>Create Anything</h1>
+        <div class="search-bala">
+            <input type="text" id="search-bar" placeholder="Search..." autocomplete="off" />
+            <ul id="suggestions" class="suggestions-list"></ul>
+        </div>
+        <div id="imageContainer" class="result"></div>
+    </div>
+    <script>
+        const searchBar = document.getElementById('search-bar');
+        const suggestionsList = document.getElementById('suggestions');
+
+        // Predefined list of suggestions and corresponding images
+        const suggestionsData = [
+            { text: 'A boy plants a plant in the pot', image: 'image.png' },
+            { text: 'Create an image bat', image: 'bat.jpg' },
+            { text: 'Make an image of a cat chasing a mouse', image: 'catMouse.png' },
+            { text: 'Dr.Pranshu Pranjal', image: 'Pranshu.png' },
+            { text: 'A tank filled with water', image: 'tank.png' }
+        ];
+
+        // Function to update suggestions based on input
+        searchBar.addEventListener('input', () => {
+            const input = searchBar.value.toLowerCase();
+            suggestionsList.innerHTML = ''; // Clear previous suggestions
+
+            if (input) {
+                const filteredSuggestions = suggestionsData.filter(item =>
+                    item.text.toLowerCase().includes(input)
+                );
+
+                filteredSuggestions.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item.text;
+                    li.addEventListener('click', () => {
+                        searchBar.value = item.text;
+                        suggestionsList.innerHTML = ''; // Clear suggestions
+                        showLoading();
+                        setTimeout(() => showImage(item.image), 3000);
+                    });
+                    suggestionsList.appendChild(li);
+                });
+
+                suggestionsList.style.display = 'block';
+            } else {
+                suggestionsList.style.display = 'none';
+            }
+        });
+
+        function showLoading() {
+            const imageContainer = document.getElementById('imageContainer');
+            imageContainer.innerHTML = `<p>Creating your image! Wait...</p>`;
+        }
+
+        function showImage(imageUrl) {
+            const imageContainer = document.getElementById('imageContainer');
+            imageContainer.innerHTML = `<img src="${imageUrl}" alt="Suggested Image">`;
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!searchBar.contains(e.target) && !suggestionsList.contains(e.target)) {
+                suggestionsList.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>
