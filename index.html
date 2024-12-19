@@ -130,11 +130,24 @@
                 opacity: 1;
             }
         }
+        .main-head{
+            display: flex;
+            position: absolute;
+            top: 10px;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 25px;
+        }
     </style>
 </head>
 
 <body>
+    <div class="main-head">
+        <h1>ARTIFICIAL AGENT WITHOUT NLP</h1>
+    </div>
+    
     <div class="search-container">
+        
         <h1>NLP Simulations</h1>
         <div class="line"></div>
         <h1>Create Anything</h1>
@@ -147,11 +160,12 @@
     <script>
         const searchBar = document.getElementById('search-bar');
         const suggestionsList = document.getElementById('suggestions');
+        
 
         // Predefined list of suggestions and corresponding images
         const suggestionsData = [
             { text: 'A boy plants a plant in the pot', image: 'image.png' },
-            { text: 'Create an image bat', image: 'bat.jpg' },
+            { text: 'Create an image of bat', image: 'bat.jpg' },
             { text: 'Make an image of a cat chasing a mouse', image: 'catMouse.png' },
             { text: 'Who is the best teacher of AI & ML in VIT Bhopal', image: 'Pranshu.png' },
             { text: 'A tank filled with water', image: 'tank.png' }
